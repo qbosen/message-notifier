@@ -1,0 +1,43 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.5.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+    id 'distribution'
+}
+
+group = 'top.abosen.toys'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    maven{ url 'http://maven.aliyun.com/nexus/content/groups/public'}
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task createDirs(group: "build setup") {
+    sourceSets*.java.srcDirs*.each {
+        it.mkdirs()
+    }
+    sourceSets*.resources.srcDirs*.each {
+        it.mkdirs()
+    }
+}
